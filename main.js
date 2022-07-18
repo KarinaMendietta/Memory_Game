@@ -8,6 +8,7 @@ let movimientos = 0;
 let aciertos = 0;
 let temporizador = false; 
 let timer =30;
+let timerInicial =30;
 let tiempoRegresivoId = null ;
 
 //Apuntando a documento HTML
@@ -81,8 +82,9 @@ function destapar(id){
             mostrarAciertos.innerHTML = `Aciertos: ${aciertos}`;
 
             if(aciertos == 8){
+                clearInterval(tiempoRegresivoId);
                 mostrarAciertos.innerHTML = `Aciertos: ${aciertos} 😎`
-                mostrarTiempo.innerHTML = `Fantastico 🎉 5515`
+                mostrarTiempo.innerHTML = `¡Fantastico 🎉 Sólo demoraste ${timerInicial - timer} segundos!`
                 mostrarMovimientos.innerHTML = `Movimientos: ${movimientos} 😲👍`
             }
         }else{
@@ -93,7 +95,7 @@ function destapar(id){
                 tarjeta1.disabled = false;
                 tarjeta2.disabled = false;
                 tarjetasDestapadas = 0;
-        },800);
+        },500);
         }
     }
 }
