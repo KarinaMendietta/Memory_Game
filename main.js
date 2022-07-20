@@ -11,6 +11,11 @@ let timer =30;
 let timerInicial =30;
 let tiempoRegresivoId = null ;
 
+let clickAudio = new Audio('./sounds/click.mp3');
+let loseAudio = new Audio('./sounds/lose.mp3');
+let popAudio = new Audio('./sounds/pop.mp3');
+let winAudio = new Audio('./sounds/win.mp3');
+
 //Apuntando a documento HTML
 let mostrarMovimientos = document.getElementById('movimientos');
 let mostrarAciertos = document.getElementById('aciertos');
@@ -21,7 +26,7 @@ let numeros = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8];
 numeros = numeros.sort(()=>{return Math.random()-0.5});
 console.log(numeros);
 
-//functiones
+//functions
 function contarTiempo(){
     tiempoRegresivoId = setInterval(()=>{
         timer--;
@@ -29,6 +34,7 @@ function contarTiempo(){
         if(timer==0){
             clearInterval(tiempoRegresivoId);
             bloquearTarjetas();
+            loseAudio.play();
         }
     },1000);
 }
@@ -37,7 +43,7 @@ function contarTiempo(){
 function bloquearTarjetas(){
     for(let i = 0; i<=15; i++){
         let tarjetaBloqueada = document.getElementById(i);
-        tarjetaBloqueada.innerHTML = numeros[i];
+        tarjetaBloqueada.innerHTML = `<img src="./cute_images/${numeros[i]}.png" alt="" >` ;
         tarjetaBloqueada.disabled = true;
     }
 } 
@@ -56,7 +62,8 @@ function destapar(id){
         //Mostrar primer numero
         tarjeta1 = document.getElementById(id);
         primerResultado = numeros[id];
-        tarjeta1.innerHTML = primerResultado;
+        tarjeta1.innerHTML = `<img src="./cute_images/${primerResultado}.png" alt="">`;
+        clickAudio.play();
 
         //Deshabilitar primer boton
         tarjeta1.disabled = true;
@@ -64,7 +71,8 @@ function destapar(id){
         //mostrar segundo numero
         tarjeta2 = document.getElementById(id);
         segundoResultado = numeros[id];
-        tarjeta2.innerHTML = segundoResultado;
+        tarjeta2.innerHTML = `<img src="./cute_images/${segundoResultado}.png" alt="">`;
+        clickAudio.play();
 
         //Deshabilitar segundo boton
         tarjeta2.disabled = true;
@@ -76,6 +84,7 @@ function destapar(id){
         if (primerResultado == segundoResultado){
             //Encerar contador tarjetas destapadas
             tarjetasDestapadas = 0;
+            popAudio.play();
 
             //Aumentar aciertos
             aciertos++;
@@ -83,6 +92,7 @@ function destapar(id){
 
             if(aciertos == 8){
                 clearInterval(tiempoRegresivoId);
+                winAudio.play();
                 mostrarAciertos.innerHTML = `Aciertos: ${aciertos} 😎`
                 mostrarTiempo.innerHTML = `¡Fantastico 🎉 Sólo demoraste ${timerInicial - timer} segundos!`
                 mostrarMovimientos.innerHTML = `Movimientos: ${movimientos} 😲👍`
